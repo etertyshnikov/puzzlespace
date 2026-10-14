@@ -1,0 +1,88 @@
+.schemaspy-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 180px);
+  background: #f8fafc;
+}
+
+.schemaspy-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.schemaspy-toolbar h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.schemaspy-lead {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #6b7280;
+  max-width: 52rem;
+}
+
+.schemaspy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.schemaspy-btn {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: 6px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.schemaspy-btn:hover {
+  background: #f3f4f6;
+}
+
+.schemaspy-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.schemaspy-btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.schemaspy-btn-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.schemaspy-error {
+  margin: 0.5rem 1rem 0;
+  color: #b91c1c;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.schemaspy-muted {
+  margin: 0.35rem 1rem 0;
+  color: #6b7280;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.schemaspy-frame {
+  flex: 1;
+  min-height: 480px;
+  width: 100%;
+  border: none;
+  background: #fff;
+}

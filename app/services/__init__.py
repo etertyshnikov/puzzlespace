@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+from app.services import (
+    branch,
+    customer,
+    lead_source,
+    specification_status,
+    user_role,
+    project_status,
+    project,
+    specification,
+    part,
+    required_item_template,
+    house_specification_template,
+    house_template,
+    nomenclature_item,
+    specification_item,
+    required_item_material,
+    specification_required_item,
+)
+
+__all__ = [
+    "branch",
+    "customer",
+    "lead_source",
+    "specification_status",
+    "user_role",
+    "project_status",
+    "project",
+    "specification",
+    "part",
+    "required_item_template",
+    "house_specification_template",
+    "house_template",
+    "nomenclature_item",
+    "specification_item",
+    "required_item_material",
+    "specification_required_item",
+]

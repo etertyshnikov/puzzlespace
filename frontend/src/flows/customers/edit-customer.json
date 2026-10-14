@@ -1,0 +1,57 @@
+{
+  "id": "edit-customer",
+  "title": "Редактирование клиента",
+  "actor": "Менеджер или агент",
+  "source": "fastapi/smetadoma05",
+  "preconditions": [
+    "Клиент виден текущему пользователю (created_by в scope иерархии)"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Клик по ФИО в таблице или иконка «Редактировать»"
+    },
+    {
+      "id": "s2",
+      "screen": "Форма редактирования",
+      "route": "/customers/:id/edit",
+      "action": "Изменить поля → «Сохранить»",
+      "ui_notes": [
+        "Заголовок: «Редактирование клиента»",
+        "Показана дата создания (created_on)",
+        "Проверка уникальности телефона только при создании (не при edit)"
+      ],
+      "fields": [
+        { "name": "last_name", "label": "Фамилия", "type": "text", "db": "customers.last_name" },
+        { "name": "name", "label": "Имя", "type": "text", "required": true, "db": "customers.name" },
+        { "name": "middle_name", "label": "Отчество", "type": "text", "db": "customers.middle_name" },
+        { "name": "phone", "label": "Телефон", "type": "tel", "db": "customers.phone" },
+        { "name": "email", "label": "Email", "type": "email", "db": "customers.email" },
+        { "name": "address", "label": "Адрес установки домокомплекта", "type": "textarea", "db": "customers.address" },
+        { "name": "deal_status", "label": "Статус сделки", "type": "select", "options": ["in_progress", "success", "rejected"], "db": "customers.deal_status" },
+        { "name": "budget", "label": "Бюджет, ₽", "type": "money", "db": "customers.budget" },
+        { "name": "lead_source_id", "label": "Источник лида", "type": "select", "source": "GET /api/lead-sources", "db": "customers.lead_source_id" },
+        { "name": "gender", "label": "Пол", "type": "radio", "db": "customers.gender" },
+        { "name": "age_bracket", "label": "Возраст", "type": "radio", "db": "customers.age_bracket" },
+        { "name": "link", "label": "Ссылка", "type": "text", "db": "customers.link" },
+        { "name": "notes", "label": "Примечания", "type": "textarea", "db": "customers.notes" },
+        { "name": "comments", "label": "Комментарии", "type": "textarea", "db": "customers.comments" }
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Возврат с state.updatedCustomer — строка в таблице обновляется без перезагрузки",
+      "result": ["PATCH /api/customers/{id}"]
+    }
+  ],
+  "api": [
+    "GET /api/customers/{id}",
+    "GET /api/lead-sources",
+    "PATCH /api/customers/{id}"
+  ],
+  "entities": ["customers", "lead_sources"]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "list-customers-projects",
+  "title": "Список клиентов и проекты",
+  "actor": "Менеджер или агент",
+  "source": "fastapi/smetadoma05",
+  "preconditions": ["Авторизован"],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Открыть раздел «Клиенты»",
+      "ui_notes": [
+        "Layout 60% / 40%: таблица клиентов | панель проектов",
+        "GET /api/customers?limit=5000&deal_status=…"
+      ],
+      "fields": [
+        { "name": "statusFilter", "label": "Фильтр статуса сделки", "type": "checkbox-group", "options": ["in_progress", "success", "rejected"] },
+        { "name": "creatorFilter", "label": "Сотрудник (только admin)", "type": "select", "source": "из списка created_by_name" }
+      ]
+    },
+    {
+      "id": "s2",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Клик по строке клиента",
+      "result": [
+        "selectedCustomerId = id",
+        "GET /api/projects?customer_id={id}",
+        "Справа: таблица проектов клиента"
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Панель проектов",
+      "route": "/customers?customer_id={id}",
+      "action": "«Добавить проект»",
+      "fields": [
+        { "name": "name", "label": "Название проекта", "type": "text", "required": true, "db": "projects.name" },
+        { "name": "project_number", "label": "Номер проекта", "type": "text", "required": false, "db": "projects.project_number", "note": "Авто A00001-P01 если пусто" }
+      ],
+      "result": ["POST /api/projects"]
+    },
+    {
+      "id": "s4",
+      "screen": "Панель проектов",
+      "route": "/customers",
+      "action": "Клик по строке проекта (не в режиме редактирования названия)",
+      "result": ["Переход на /projects/{id}/specifications"]
+    },
+    {
+      "id": "s5",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Иконка удаления клиента",
+      "result": [
+        "confirm «Удалить клиента?»",
+        "DELETE /api/customers/{id} — каскад: проекты, spec, заказы…"
+      ]
+    }
+  ],
+  "api": [
+    "GET /api/customers",
+    "GET /api/projects?customer_id=",
+    "GET /api/project-statuses",
+    "POST /api/projects",
+    "PATCH /api/projects/{id}",
+    "DELETE /api/customers/{id}",
+    "DELETE /api/projects/{id}"
+  ],
+  "entities": ["customers", "projects", "project_statuses"]
+}

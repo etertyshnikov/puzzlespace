@@ -1,0 +1,175 @@
+{
+  "id": "create-company",
+  "title": "Добавление компании",
+  "actor": "Собственник или менеджер платформы СметаДома CRM",
+  "source": "fastapi/smetadoma05 (частично) → целевой сценарий Go v2 / backoffice",
+  "implementation": "planned",
+  "implementation_note": "Точка входа — backoffice (/backoffice), не настройки CRM as-is (/settings/companies). As-is: POST /api/companies без собственника, ЛК и seed расчётов.",
+  "preconditions": [
+    "Собственник СметаДома CRM авторизован в backoffice (суперкомпания)",
+    "Роль: platform_owner, superadmin или platform_manager с правом «Создание компаний»",
+    "Открыт экран «Компании» backoffice (сценарий backoffice-overview)"
+  ],
+  "business_rules": [
+    "При создании компании автоматически создаётся пользователь-собственник компании-клиента (role=company_owner)",
+    "Собственник компании-клиента имеет права ТОЛЬКО внутри своей company_id",
+    "Логин nic уникален в рамках компании: UNIQUE(company_id, nic)",
+    "Генерируется ссылка на ЛК компании (/c/{slug}/login?token=…)",
+    "Seed типовых CalculationRule (is_system=true) как примеры для своих расчётов"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "Вход в backoffice",
+      "route": "/backoffice/login",
+      "action": "Собственник СметаДома CRM входит в приложение управления платформой",
+      "ui_notes": [
+        "Отдельное приложение от CRM компании-клиента",
+        "После входа → redirect /backoffice"
+      ]
+    },
+    {
+      "id": "s2",
+      "screen": "Список компаний (backoffice)",
+      "route": "/backoffice/companies",
+      "action": "На экране таблицы компаний нажать «Добавить компанию»",
+      "ui_notes": [
+        "Таблица: все компании платформы + раскрываемый список пользователей",
+        "Кнопка «Добавить компанию» — справа в заголовке",
+        "Продолжение сценария backoffice-overview → шаг «Таблица компаний»"
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Форма новой компании",
+      "route": "/backoffice/companies/new",
+      "action": "Заполнить данные компании и собственника → «Создать компанию»",
+      "fields": [
+        { "name": "name", "label": "Название компании", "type": "text", "required": true, "db": "companies.name" },
+        { "name": "code", "label": "Код", "type": "text", "required": false, "db": "companies.code" },
+        { "name": "slug", "label": "Slug (URL ЛК)", "type": "text", "required": true, "note": "Ссылка /c/{slug}/…", "db": "companies.slug" },
+        { "name": "description", "label": "Описание", "type": "textarea", "required": false, "db": "companies.description" },
+        { "name": "is_active", "label": "Активна", "type": "checkbox", "required": false, "default": true, "db": "companies.is_active" },
+        { "name": "owner_nic", "label": "Логин собственника", "type": "text", "required": true, "validation": "UNIQUE (company_id, nic)", "db": "auth_user.nic" },
+        { "name": "owner_email", "label": "Email собственника", "type": "email", "required": true, "db": "auth_user.email" },
+        { "name": "owner_first_name", "label": "Имя собственника", "type": "text", "required": true, "db": "auth_user.first_name" },
+        { "name": "owner_last_name", "label": "Фамилия собственника", "type": "text", "required": false, "db": "auth_user.last_name" },
+        { "name": "owner_password_mode", "label": "Пароль", "type": "radio", "required": true, "options": [
+          { "value": "invite", "label": "Сгенерировать ссылку (рекомендуется)" },
+          { "value": "manual", "label": "Задать временный пароль" }
+        ], "note": "При invite пароль задаёт собственник по ссылке ЛК" }
+      ],
+      "buttons": [
+        { "label": "Создать компанию", "action": "POST /api/backoffice/companies" },
+        { "label": "Отмена", "action": "navigate /backoffice/companies" }
+      ],
+      "result": ["POST /api/backoffice/companies → create_company_with_owner"]
+    },
+    {
+      "id": "s4",
+      "screen": "Бэкенд",
+      "route": "POST /api/backoffice/companies",
+      "action": "create_company_with_owner (одна транзакция)",
+      "system": true,
+      "parallel_note": "Атомарно: компания, собственник, организация, seed расчётов, ссылка ЛК",
+      "parallel": [
+        {
+          "id": "s4a",
+          "screen": "Создание компании",
+          "side_effect": "INSERT companies",
+          "result": [
+            "name, code, slug, is_active=true, is_super_company=false",
+            "EVENT_COMPANY_CREATED"
+          ]
+        },
+        {
+          "id": "s4b",
+          "screen": "Создание собственника компании-клиента",
+          "side_effect": "INSERT auth_user",
+          "result": [
+            "company_id = новая компания",
+            "role = company_owner (hierarchy_level=0)",
+            "nic — UNIQUE только внутри company_id",
+            "registration_key / invite token"
+          ]
+        },
+        {
+          "id": "s4c",
+          "screen": "Организация по умолчанию",
+          "side_effect": "INSERT organizations",
+          "result": ["company_id, name «Организация по умолчанию», is_default=true"]
+        },
+        {
+          "id": "s4d",
+          "screen": "Типовые расчёты (примеры)",
+          "side_effect": "INSERT calculation_rules (batch seed)",
+          "result": [
+            "company_id, is_system=true",
+            "Примеры формул для копирования менеджерами компании"
+          ]
+        },
+        {
+          "id": "s4e",
+          "screen": "Ссылка на ЛК компании",
+          "side_effect": "Генерация company_portal_url",
+          "result": [
+            "URL: https://{host}/c/{slug}/login?token={one_time_token}",
+            "Отображается оператору backoffice для отправки собственнику компании"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "screen": "Список компаний (backoffice)",
+      "route": "/backoffice/companies",
+      "action": "Экран подтверждения → возврат к таблице компаний",
+      "ui_notes": [
+        "Toast «Компания создана» + блок «Ссылка для собственника»",
+        "Новая строка в таблице /backoffice/companies",
+        "Раскрытие строки — виден собственник и 1 пользователь",
+        "Дальше: собственник компании → add-company-user в ЛК /c/{slug}"
+      ]
+    }
+  ],
+  "api_planned": {
+    "method": "POST",
+    "path": "/api/backoffice/companies",
+    "body": {
+      "name": "string, required",
+      "code": "string, optional",
+      "slug": "string, required, unique",
+      "description": "string, optional",
+      "is_active": "boolean, default true",
+      "owner": {
+        "nic": "string, required",
+        "email": "string, required",
+        "first_name": "string, required",
+        "last_name": "string, optional",
+        "password": "string, optional if invite",
+        "send_invite": "boolean, default true"
+      }
+    },
+    "response": {
+      "company": "CompanyOut",
+      "owner_user_id": "integer",
+      "portal_url": "string",
+      "seeded_calculation_rules_count": "integer"
+    },
+    "errors": [
+      "403 — нет доступа к backoffice",
+      "409 — slug или code уже занят",
+      "422 — nic собственника уже есть в этой компании"
+    ]
+  },
+  "entities": [
+    "companies",
+    "organizations",
+    "auth_user",
+    "user_roles",
+    "calculation_rules",
+    "user_invites"
+  ],
+  "related_flows": ["backoffice-overview", "add-company-user"],
+  "parent_flow": "backoffice-overview"
+}

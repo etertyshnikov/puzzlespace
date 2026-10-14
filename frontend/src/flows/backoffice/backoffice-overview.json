@@ -1,0 +1,109 @@
+{
+  "id": "backoffice-overview",
+  "title": "Управление приложением (backoffice)",
+  "actor": "Собственник или менеджер платформы СметаДома CRM",
+  "source": "целевой сценарий Go v2",
+  "implementation": "planned",
+  "implementation_note": "Backoffice — отдельное внутреннее приложение платформы (не ЛК компании-клиента и не CRM менеджера застройщика). As-is smetadoma05: справочник компаний в /settings/companies без backoffice, отчётов и иерархии пользователей по компаниям.",
+  "preconditions": [
+    "Пользователь — сотрудник платформы СметаДома CRM (суперкомпания, is_super_company=true)",
+    "Роль: platform_owner, superadmin или platform_manager с доступом к backoffice",
+    "Обычные собственники и менеджеры компаний-клиентов backoffice не видят"
+  ],
+  "business_rules": [
+    "Backoffice — единая точка управления всеми компаниями-клиентами платформы",
+    "Данные компаний изолированы в их ЛК; backoffice показывает агрегированную сводку и управление",
+    "Отчёт по заработанным деньгам строится по подпискам, транзакциям и комиссиям платформы (не выручка компании-клиента)",
+    "Действия в backoffice логируются (platform_audit_log)"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "Вход в backoffice",
+      "route": "/backoffice/login",
+      "action": "Собственник СметаДома CRM входит под учётной записью платформы",
+      "ui_notes": [
+        "Отдельный URL от CRM компании-клиента (/c/{slug}) и от as-is /login",
+        "JWT: company_id → суперкомпания, scope=platform"
+      ]
+    },
+    {
+      "id": "s2",
+      "screen": "Главный экран backoffice",
+      "route": "/backoffice",
+      "action": "Просмотр сводки: компании, пользователи, финансы",
+      "ui_notes": [
+        "Верхнее меню: Компании · Отчёты · Настройки платформы",
+        "KPI-карточки: число компаний, активных пользователей, MRR, заработано за период"
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Таблица компаний",
+      "route": "/backoffice/companies",
+      "action": "Просмотр и фильтрация списка компаний",
+      "ui_notes": [
+        "Колонки: ID, название, slug, код, статус (активна), собственник, число пользователей, дата создания",
+        "Раскрытие строки → вложенный список пользователей компании (nic, ФИО, роль, последний вход)",
+        "Фильтры: активность, период регистрации, поиск по названию/slug",
+        "Кнопка «Добавить компанию» → сценарий create-company"
+      ],
+      "fields": [
+        { "name": "search", "label": "Поиск", "type": "text", "required": false, "note": "Название, slug, email собственника" },
+        { "name": "is_active", "label": "Статус", "type": "select", "required": false, "options": [
+          { "value": "all", "label": "Все" },
+          { "value": "active", "label": "Активные" },
+          { "value": "inactive", "label": "Неактивные" }
+        ], "db": "companies.is_active" }
+      ]
+    },
+    {
+      "id": "s4",
+      "screen": "Пользователи компании (раскрытие строки)",
+      "route": "/backoffice/companies",
+      "action": "Клик по строке компании → список auth_user с company_id",
+      "ui_notes": [
+        "Таблица: nic, email, ФИО, роль (owner/manager/agent), hierarchy_level, is_active, last_login_at",
+        "nic может повторяться у разных компаний — в таблице всегда показан в контексте company_id",
+        "Ссылка «Открыть ЛК компании» — impersonation только для superadmin (опционально, TBD)"
+      ],
+      "result": ["GET /api/backoffice/companies/{id}/users"]
+    },
+    {
+      "id": "s5",
+      "screen": "Отчёт по заработанным деньгам",
+      "route": "/backoffice/reports/revenue",
+      "action": "Выбор периода → просмотр отчёта",
+      "fields": [
+        { "name": "period_from", "label": "С", "type": "text", "required": true, "format": "date", "db": "platform_revenue_events.period" },
+        { "name": "period_to", "label": "По", "type": "text", "required": true, "format": "date", "db": "platform_revenue_events.period" },
+        { "name": "group_by", "label": "Группировка", "type": "select", "required": false, "options": [
+          { "value": "day", "label": "По дням" },
+          { "value": "month", "label": "По месяцам" },
+          { "value": "company", "label": "По компаниям" }
+        ] }
+      ],
+      "ui_notes": [
+        "Показатели: подписки, доп. модули, комиссия shop, итого за период",
+        "Таблица по компаниям: company_name, tariff, amount, payment_status, paid_at",
+        "Экспорт CSV / Excel",
+        "Источник: platform_subscriptions, platform_payments, platform_revenue_events"
+      ],
+      "result": ["GET /api/backoffice/reports/revenue?from=&to=&group_by="]
+    }
+  ],
+  "api_planned": [
+    "GET /api/backoffice/companies",
+    "GET /api/backoffice/companies/{id}/users",
+    "GET /api/backoffice/reports/revenue",
+    "GET /api/backoffice/dashboard/summary"
+  ],
+  "entities": [
+    "companies",
+    "auth_user",
+    "platform_subscriptions",
+    "platform_payments",
+    "platform_revenue_events"
+  ],
+  "related_flows": ["create-company"]
+}

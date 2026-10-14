@@ -1,0 +1,41 @@
+# Alembic migrations — smetadoma05
+
+## Команды
+
+```bash
+cd /opt/fastapi/smetadoma05
+source .venv/bin/activate
+
+# Применить все миграции
+bash scripts/migrate-apply.sh
+
+# Новая миграция после изменения app/models/
+bash scripts/migrate-revision.sh "add_foo_column"
+
+# Текущая версия
+venv/bin/alembic current
+
+# История
+venv/bin/alembic history
+```
+
+## Первая настройка
+
+**Пустая БД:**
+```bash
+bash scripts/migrate-apply.sh
+```
+
+**Таблицы уже есть** (создавали через `create_all`):
+```bash
+bash scripts/migrate-stamp.sh head
+```
+
+> Не используйте `python -m alembic` — папка `alembic/` в корне проекта
+> перекрывает пакет. Вызывайте `venv/bin/alembic` или `bash scripts/migrate-apply.sh`.
+
+## Деплой
+
+`deploy/smetadoma05.service` вызывает `scripts/migrate-apply.sh` перед uvicorn.
+
+Схема БД **не** применяется при старте FastAPI — только seed справочников (роли, статусы).

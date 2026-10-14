@@ -1,0 +1,902 @@
+/* ============================================================
+   ERP‑UI — Единый стиль интерфейса
+   Автор: Copilot + Алексей
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. TOP NAVIGATION (горизонтальное меню)
+   ------------------------------------------------------------ */
+
+/* Фиксированная верхняя панель */
+.erp-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+    border-bottom: 1px solid #dfe3ea;
+    padding: 10px 16px;
+    height: 56px;
+
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Меню закреплено сверху при прокрутке (position: fixed выше) */
+/* Чтобы контент не залезал под меню */
+body {
+    padding-top: 56px;
+}
+
+/* Компактный блок header на всех страницах */
+.page-header-mini {
+    margin-bottom: 16px;
+}
+.page-header-mini .jumbotron,
+.page-header-mini .jumbotron-fluid {
+    padding: 10px 16px !important;
+    margin-bottom: 0;
+    min-height: auto;
+}
+.page-header-mini .display-4 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+.page-header-mini .lead {
+    font-size: 0.875rem !important;
+    margin-bottom: 0;
+    opacity: .95;
+}
+.page-header-mini .btn-lg {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.875rem;
+}
+.page-header-mini .container {
+    max-width: 100%;
+}
+
+
+/* Правая часть навбара: меню + пользователь */
+.erp-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Логотип */
+.erp-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #181c32;
+    text-decoration: none;
+}
+.erp-logo:hover {
+    color: #181c32;
+    text-decoration: none;
+}
+
+.erp-logo img {
+    height: 32px;
+    width: auto;
+}
+
+.erp-logo span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #181c32;
+}
+
+/* Меню */
+.erp-menu {
+    list-style: none;
+    display: flex;
+    gap: 22px;
+    margin: 0;
+    padding: 0;
+}
+
+.erp-menu > li {
+    position: relative;
+}
+
+.erp-menu > li > a,
+.erp-menu .dropdown-toggle {
+    font-size: 14px;
+    font-weight: 500;
+    color: #3f4254;
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 4px;
+    transition: 0.2s ease;
+}
+
+.erp-menu > li > a:hover,
+.erp-menu .dropdown-toggle:hover {
+    background: #eef3f9;
+    color: #009ef7;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    padding: 6px 0;
+    min-width: 180px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    display: none;
+    z-index: 20;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 14px;
+    color: #3f4254;
+    text-decoration: none;
+    transition: 0.15s;
+}
+
+.dropdown-menu li a:hover {
+    background: #eef6ff;
+    color: #009ef7;
+}
+
+.erp-menu a.active {
+    background: #eef6ff;
+    color: #009ef7;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+/* Выпадающее меню справа (пользователь) */
+.erp-nav .dropdown-menu-right {
+    left: auto;
+    right: 0;
+}
+
+.erp-menu-user {
+    margin-left: auto;
+}
+
+
+/* ------------------------------------------------------------
+   2. BREADCRUMBS (хлебные крошки)
+   ------------------------------------------------------------ */
+.erp-breadcrumb {
+    background: #f7f9fc;
+    border: 1px solid #e2e6ee;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.erp-breadcrumb a {
+    color: #3f4254;
+    text-decoration: none;
+}
+
+.erp-breadcrumb a:hover {
+    color: #009ef7;
+}
+
+.erp-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: #9aa0ac;
+}
+
+
+/* ------------------------------------------------------------
+   3. SUBMENU (панель с кнопками)
+   ------------------------------------------------------------ */
+.erp-submenu {
+    background: #ffffff;
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+
+/* ------------------------------------------------------------
+   4. BUTTONS (кнопки ERP‑UI)
+   ------------------------------------------------------------ */
+.btn-erp {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: 0.2s ease;
+    color: inherit; /* наследует цвет кнопки */ 
+    text-decoration: none; /* убирает подчёркивание */ 
+    display: inline-block; /* корректное поведение */
+}
+
+.erp-btn a {
+    color: inherit;            /* наследует цвет кнопки */
+    text-decoration: none;     /* убирает подчёркивание */
+    display: inline-block;     /* корректное поведение */
+}
+
+.erp-btn a:hover {
+    text-decoration: none;     /* даже при наведении */
+    color: inherit;            /* не меняет цвет */
+}
+
+
+/* Primary */
+.btn-erp.primary {
+    background: #009ef7;
+    border-color: #009ef7;
+    color: #fff;
+}
+.btn-erp.primary:hover {
+    background: #007fd1;
+}
+
+/* Danger */
+.btn-erp.danger {
+    background: #f1416c;
+    border-color: #f1416c;
+    color: #fff;
+}
+.btn-erp.danger:hover {
+    background: #d92f59;
+}
+
+/* Secondary */
+.btn-erp.secondary {
+    background: #f5f8fa;
+    border: 1px solid #e4e6ef;
+    color: #3f4254;
+}
+.btn-erp.secondary:hover {
+    background: #eef1f5;
+}
+
+/* Success */
+.btn-erp.success {
+    background: #50cd89;
+    border-color: #50cd89;
+    color: #fff;
+}
+.btn-erp.success:hover {
+    background: #3fb776;
+}
+
+/* Warning */
+.btn-erp.warning {
+    background: #ffc700;
+    border-color: #ffc700;
+    color: #3f3f3f;
+}
+.btn-erp.warning:hover {
+    background: #e6b300;
+}
+
+/* Info */
+.btn-erp.info {
+    background: #7239ea;
+    border-color: #7239ea;
+    color: #fff;
+}
+.btn-erp.info:hover {
+    background: #5d2cc2;
+}
+
+/* Light */
+.btn-erp.light {
+    background: #f9fafb;
+    border: 1px solid #e4e6ef;
+    color: #3f4254;
+}
+.btn-erp.light:hover {
+    background: #eef1f5;
+}
+
+/* Dark */
+.btn-erp.dark {
+    background: #1e293b;
+    border-color: #1e293b;
+    color: #fff;
+}
+.btn-erp.dark:hover {
+    background: #151d2b;
+}
+
+/* Outline */
+.btn-erp.outline {
+    background: transparent;
+    border: 1px solid #b5b5c3;
+    color: #3f4254;
+}
+.btn-erp.outline:hover {
+    background: #f5f8fa;
+}
+
+/* Ghost */
+.btn-erp.ghost {
+    background: transparent;
+    border: none;
+    color: #3f4254;
+}
+.btn-erp.ghost:hover {
+    background: #f5f8fa; 
+    text-decoration: none; /* даже при наведении */ 
+    color: inherit; /* не меняет цвет */
+}
+
+
+/* ------------------------------------------------------------
+   5. TABLES (таблицы ERP‑UI)
+   ------------------------------------------------------------ */
+.erp-table-card {
+    background: #ffffff;
+    border: 1px solid #e4e6ef;
+    border-radius: 6px;
+    padding: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.erp-table-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #181c32;
+    margin-bottom: 14px;
+}
+
+.erp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.erp-table thead th {
+    background: #f5f8fa;
+    padding: 10px 12px;
+    font-weight: 600;
+    color: #3f4254;
+    border-bottom: 2px solid #e4e6ef;
+}
+
+.erp-table tbody td {
+    padding: 10px 12px;
+    border-top: 1px solid #eff2f5;
+    color: #3f4254;
+}
+
+.erp-table tbody tr:nth-child(even) {
+    background: #fcfcfd;
+}
+
+.erp-table tbody tr:hover {
+    background: #f1faff;
+}
+
+
+/* ------------------------------------------------------------
+   6. CARDS (карточки)
+   ------------------------------------------------------------ */
+.erp-card {
+    background: #fff;
+    border: 1px solid #e4e6ef;
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 16px;
+}
+
+.erp-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+
+/* ------------------------------------------------------------
+   7. WIDGETS (виджеты)
+   ------------------------------------------------------------ */
+.erp-widget {
+    background: #fff;
+    border: 1px solid #e4e6ef;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.erp-widget-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #009ef7;
+}
+
+.erp-widget-label {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+
+/* ------------------------------------------------------------
+   8. ACCORDION (аккордеоны)
+   ------------------------------------------------------------ */
+.erp-accordion {
+    border: 1px solid #e4e6ef;
+    border-radius: 6px;
+    background: #fff;
+    margin-bottom: 16px;
+}
+
+.erp-acc-item + .erp-acc-item {
+    border-top: 1px solid #e4e6ef;
+}
+
+.erp-acc-header {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #3f4254;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.erp-acc-header:hover {
+    background: #f5f8fa;
+}
+
+.erp-acc-body {
+    padding: 16px;
+    display: none;
+    color: #3f4254;
+}
+
+.erp-acc-item.active .erp-acc-body {
+    display: block;
+}
+
+.erp-acc-item.active .erp-acc-header {
+    background: #eef6ff;
+    color: #009ef7;
+}
+
+
+/* ------------------------------------------------------------
+   9. MODALS (модальные окна)
+   ------------------------------------------------------------ */
+.erp-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.erp-modal {
+    background: #fff;
+    border-radius: 8px;
+    width: 480px;
+    padding: 20px;
+    border: 1px solid #e4e6ef;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.erp-modal-header {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.erp-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.erp-modal-overlay.active {
+    display: flex;
+}
+
+
+/* ------------------------------------------------------------
+   10. INPUTS (инпуты)
+   ------------------------------------------------------------ */
+.erp-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #3f4254;
+    transition: 0.2s;
+}
+
+.erp-input:focus {
+    border-color: #009ef7;
+    box-shadow: 0 0 0 3px rgba(0,158,247,0.15);
+    outline: none;
+}
+
+
+/* ------------------------------------------------------------
+   11. SELECTS (селекты)
+   ------------------------------------------------------------ */
+.erp-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+    color: #3f4254;
+    cursor: pointer;
+}
+
+.erp-select:focus {
+    border-color: #009ef7;
+    box-shadow: 0 0 0 3px rgba(0,158,247,0.15);
+    outline: none;
+}
+
+
+/* ------------------------------------------------------------
+   12. MULTISELECT (множественный выбор)
+   ------------------------------------------------------------ */
+.erp-multiselect {
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    padding: 6px;
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.erp-tag {
+    background: #eef6ff;
+    color: #009ef7;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.erp-tag-remove {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+/* ------------------------------------------------------------
+   13. DROPDOWN (выпадающее меню)
+   ------------------------------------------------------------ */
+.erp-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.erp-dropdown-btn {
+    padding: 8px 14px;
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.erp-dropdown-menu {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: #fff;
+    border: 1px solid #dfe3ea;
+    border-radius: 6px;
+    min-width: 180px;
+    padding: 6px 0;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.erp-dropdown-menu a {
+    display: block;
+    padding: 10px 14px;
+    color: #3f4254;
+    text-decoration: none;
+}
+
+.erp-dropdown-menu a:hover {
+    background: #eef6ff;
+    color: #009ef7;
+}
+
+.erp-dropdown.open .erp-dropdown-menu {
+    display: block;
+}
+
+
+/* ------------------------------------------------------------
+   14. VERTICAL TABS (вертикальные табы)
+   ------------------------------------------------------------ */
+.erp-vtabs {
+    display: flex;
+    gap: 16px;
+}
+
+.erp-vtabs-menu {
+    width: 220px;
+    border: 1px solid #e4e6ef;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.erp-vtabs-menu a {
+    display: block;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f2f6;
+    color: #3f4254;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.erp-vtabs-menu a:hover {
+    background: #f5f8fa;
+    color: #009ef7;
+}
+
+.erp-vtabs-menu a.active {
+    background: #eef6ff;
+    border-left: 3px solid #009ef7;
+    color: #009ef7;
+}
+
+.erp-vtabs-content {
+    flex: 1;
+    border: 1px solid #e4e6ef;
+    border-radius: 6px;
+    background: #fff;
+    padding: 20px;
+}
+
+
+/* ------------------------------------------------------------
+   15. HORIZONTAL TABS (горизонтальные табы)
+   ------------------------------------------------------------ */
+.erp-htabs {
+    display: flex;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #e4e6ef;
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.htab {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #3f4254;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: 0.2s;
+}
+
+.htab:hover {
+    background: #f5f8fa;
+    color: #009ef7;
+}
+
+.htab.active {
+    background: #eef6ff;
+    border-color: #009ef7;
+    color: #009ef7;
+    font-weight: 600;
+}
+
+.htabs-content {
+    border: 1px solid #e4e6ef;
+    border-radius: 6px;
+    background: #fff;
+    padding: 20px;
+}
+
+.htab-pane {
+    display: none;
+}
+
+.htab-pane.active {
+    display: block;
+}
+/* ------------------------------------------------------------
+   16. CHECK BOX (горизонтальные табы)
+   ------------------------------------------------------------ */
+
+   .erp-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #3f4254;
+}
+
+.erp-check input {
+    display: none;
+}
+
+.erp-check .checkmark {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #cfd3da;
+    border-radius: 4px;
+    background: #fff;
+    transition: 0.15s;
+}
+
+.erp-check input:checked + .checkmark {
+    background: #009ef7;
+    border-color: #009ef7;
+    box-shadow: inset 0 0 0 3px #fff;
+}
+
+.erp-check-shadow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.erp-check-shadow input {
+    display: none;
+}
+
+.erp-check-shadow .box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid #d7dce3;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    transition: 0.15s;
+}
+
+.erp-check-shadow input:checked + .box {
+    background: #50cd89;
+    border-color: #50cd89;
+    box-shadow: 0 0 0 3px rgba(80,205,137,0.25);
+}
+
+.erp-check-svg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.erp-check-svg input {
+    display: none;
+}
+
+.erp-check-svg .mark {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #cfd3da;
+    border-radius: 4px;
+    background: #fff;
+    position: relative;
+    transition: 0.15s;
+}
+
+.erp-check-svg input:checked + .mark {
+    background: #009ef7;
+    border-color: #009ef7;
+}
+
+.erp-check-svg input:checked + .mark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+
+.erp-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.erp-toggle input {
+    display: none;
+}
+
+.erp-toggle .slider {
+    width: 34px;
+    height: 18px;
+    background: #e4e6ef;
+    border-radius: 20px;
+    position: relative;
+    transition: 0.2s;
+}
+
+.erp-toggle .slider::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: 0.2s;
+}
+
+.erp-toggle input:checked + .slider {
+    background: #009ef7;
+}
+
+.erp-toggle input:checked + .slider::before {
+    transform: translateX(16px);
+}
+
+
+.erp-check-bold {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.erp-check-bold input {
+    display: none;
+}
+
+.erp-check-bold .box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #b5b5c3;
+    border-radius: 4px;
+    background: #fff;
+    transition: 0.15s;
+}
+
+.erp-check-bold input:checked + .box {
+    background: #009ef7;
+    border-color: #009ef7;
+}

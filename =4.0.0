@@ -1,0 +1,6 @@
+Collecting pypdf
+  Downloading pypdf-6.11.0-py3-none-any.whl (338 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 338.8/338.8 KB 821.9 kB/s eta 0:00:00
+Requirement already satisfied: typing_extensions>=4.0 in ./venv/lib/python3.10/site-packages (from pypdf) (4.15.0)
+Installing collected packages: pypdf
+Successfully installed pypdf-6.11.0

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ — Сметадома</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        :root {
+            --smet-primary: #1ABB9C;
+            --smet-dark: #2A3F54;
+            --smet-muted: #73879C;
+        }
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+        .navbar-smet {
+            background-color: var(--smet-dark);
+        }
+        .navbar-smet .navbar-brand,
+        .navbar-smet .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .navbar-smet .nav-link:hover,
+        .navbar-smet .nav-link.active {
+            color: #fff;
+        }
+        .navbar-smet .nav-link.active {
+            font-weight: 600;
+        }
+        .page-toolbar {
+            background: #fff;
+            border-bottom: 1px solid #e6e9ed;
+        }
+        .page-toolbar h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--smet-dark);
+            margin: 0;
+        }
+        .panel-card {
+            background: #fff;
+            border: 1px solid #e6e9ed;
+            border-radius: 0.375rem;
+            height: 100%;
+        }
+        .panel-card .card-header {
+            background: #fff;
+            border-bottom: 1px solid #e6e9ed;
+            font-weight: 600;
+            color: var(--smet-dark);
+            padding: 0.75rem 1rem;
+        }
+        .panel-card .card-body {
+            padding: 1rem;
+        }
+        .btn-smet-primary {
+            background-color: var(--smet-primary);
+            border-color: var(--smet-primary);
+            color: #fff;
+        }
+        .btn-smet-primary:hover {
+            background-color: #17a589;
+            border-color: #17a589;
+            color: #fff;
+        }
+        .form-label {
+            font-size: 0.875rem;
+            color: var(--smet-muted);
+            margin-bottom: 0.25rem;
+        }
+        .table thead th {
+            background-color: #f8f9fa;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--smet-dark);
+            white-space: nowrap;
+        }
+        .table tbody td {
+            font-size: 0.875rem;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Верхнее меню -->
+    <nav class="navbar navbar-expand-lg navbar-smet navbar-dark">
+        <div class="container-fluid px-3 px-lg-4">
+            <a class="navbar-brand fw-semibold" href="#">Сметадома</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
+                    aria-controls="topNav" aria-expanded="false" aria-label="Меню">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="topNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Дашборд</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Проекты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Клиенты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Настройки</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Администратор
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Профиль</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Выход</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Плашка: Назад + название -->
+    <div class="page-toolbar py-3">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="d-flex align-items-center gap-3">
+                <a href="#" class="btn btn-outline-secondary btn-sm">
+                    ← Назад
+                </a>
+                <h1>Редактирование позиции</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Две колонки 50/50 -->
+    <main class="container-fluid px-3 px-lg-4 py-4">
+        <div class="row g-4">
+            <!-- Левая колонка: форма -->
+            <div class="col-12 col-lg-6">
+                <div class="panel-card card shadow-sm">
+                    <div class="card-header">Параметры</div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="input1" class="form-label">Название</label>
+                                <input type="text" class="form-control" id="input1" placeholder="Дом 6×8">
+                            </div>
+                            <div class="mb-3">
+                                <label for="input2" class="form-label">Номер проекта</label>
+                                <input type="text" class="form-control" id="input2" placeholder="A00001-P01">
+                            </div>
+                            <div class="mb-3">
+                                <label for="input3" class="form-label">Клиент</label>
+                                <input type="text" class="form-control" id="input3" placeholder="Иванов И.И.">
+                            </div>
+                            <div class="mb-3">
+                                <label for="input4" class="form-label">Телефон</label>
+                                <input type="tel" class="form-control" id="input4" placeholder="+7 (999) 000-00-00">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label for="input5" class="form-label">Длина, м</label>
+                                    <input type="number" class="form-control" id="input5" step="0.01" value="6">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="input6" class="form-label">Ширина, м</label>
+                                    <input type="number" class="form-control" id="input6" step="0.01" value="8">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="input7" class="form-label">Статус</label>
+                                <select class="form-select" id="input7">
+                                    <option selected>Новый</option>
+                                    <option>В работе</option>
+                                    <option>КП отправлено</option>
+                                    <option>Договор</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="input8" class="form-label">Сумма, ₽</label>
+                                <input type="number" class="form-control" id="input8" step="0.01" placeholder="0">
+                            </div>
+                            <div class="mb-3">
+                                <label for="input9" class="form-label">Менеджер</label>
+                                <input type="text" class="form-control" id="input9" placeholder="Петров А.">
+                            </div>
+                            <div class="mb-3">
+                                <label for="input10" class="form-label">Комментарий</label>
+                                <textarea class="form-control" id="input10" rows="3"
+                                          placeholder="Служебные заметки"></textarea>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-smet-primary">Сохранить</button>
+                                <button type="reset" class="btn btn-outline-secondary">Сбросить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: таблица -->
+            <div class="col-12 col-lg-6">
+                <div class="panel-card card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Спецификации</span>
+                        <button type="button" class="btn btn-sm btn-smet-primary">+ Добавить</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">№</th>
+                                        <th scope="col">Название</th>
+                                        <th scope="col">Статус</th>
+                                        <th scope="col" class="text-end">Сумма</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>A00001-P01-S01</td>
+                                        <td>Дом 6×8, 1 этаж</td>
+                                        <td><span class="badge text-bg-secondary">Черновик</span></td>
+                                        <td class="text-end">1 245 000 ₽</td>
+                                    </tr>
+                                    <tr>
+                                        <td>A00001-P01-S02</td>
+                                        <td>Дом 6×8, терраса</td>
+                                        <td><span class="badge text-bg-success">Согласовано</span></td>
+                                        <td class="text-end">320 500 ₽</td>
+                                    </tr>
+                                    <tr>
+                                        <td>A00001-P01-S03</td>
+                                        <td>Баня 4×5</td>
+                                        <td><span class="badge text-bg-warning text-dark">КП</span></td>
+                                        <td class="text-end">890 000 ₽</td>
+                                    </tr>
+                                    <tr>
+                                        <td>A00001-P01-S04</td>
+                                        <td>Доп. утепление</td>
+                                        <td><span class="badge text-bg-secondary">Черновик</span></td>
+                                        <td class="text-end">156 200 ₽</td>
+                                    </tr>
+                                    <tr>
+                                        <td>A00001-P01-S05</td>
+                                        <td>Комплект кровли</td>
+                                        <td><span class="badge text-bg-info">В работе</span></td>
+                                        <td class="text-end">412 800 ₽</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
+</html>

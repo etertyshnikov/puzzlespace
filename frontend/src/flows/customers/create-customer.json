@@ -1,0 +1,120 @@
+{
+  "id": "create-customer",
+  "title": "Создание клиента",
+  "actor": "Менеджер или агент",
+  "source": "fastapi/smetadoma05",
+  "preconditions": [
+    "Пользователь авторизован (JWT в localStorage)",
+    "Видимость: только свои клиенты (агент) или команда (менеджер/директор)"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "Меню",
+      "route": "/*",
+      "action": "Боковое меню → «Клиенты»"
+    },
+    {
+      "id": "s2",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Кнопка «Добавить клиента» (зелёная, справа в заголовке)",
+      "ui_notes": [
+        "Таблица: ID, №, ФИО, статус сделки, телефон",
+        "Фильтр «Статус» (чекбоксы: В работе / Успех / Отказ)",
+        "Для admin: фильтр «Все сотрудники» по создателю",
+        "Справа панель «Проекты» — появится после выбора клиента"
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Форма нового клиента",
+      "route": "/customers/new",
+      "action": "Заполнить поля → «Сохранить»",
+      "fields": [
+        { "name": "last_name", "label": "Фамилия", "type": "text", "required": false, "db": "customers.last_name" },
+        { "name": "name", "label": "Имя", "type": "text", "required": true, "db": "customers.name" },
+        { "name": "middle_name", "label": "Отчество", "type": "text", "required": false, "db": "customers.middle_name" },
+        { "name": "phone", "label": "Телефон", "type": "tel", "required": true, "format": "+7 (xxx) xxx-xx-xx", "validation": "GET /api/customers/check-phone?phone=… — уникальность", "db": "customers.phone" },
+        { "name": "email", "label": "Email", "type": "email", "required": false, "db": "customers.email" },
+        { "name": "address", "label": "Адрес установки домокомплекта", "type": "textarea", "required": true, "db": "customers.address" },
+        { "name": "link", "label": "Ссылка", "type": "text", "required": false, "db": "customers.link" },
+        { "name": "notes", "label": "Примечания", "type": "textarea", "required": false, "db": "customers.notes" },
+        { "name": "comments", "label": "Комментарии", "type": "textarea", "required": false, "db": "customers.comments" },
+        { "name": "deal_status", "label": "Статус сделки", "type": "select", "required": true, "default": "in_progress", "options": [
+          { "value": "in_progress", "label": "В работе" },
+          { "value": "success", "label": "Успех" },
+          { "value": "rejected", "label": "Отказ" }
+        ], "db": "customers.deal_status" },
+        { "name": "budget", "label": "Бюджет, ₽", "type": "money", "required": false, "db": "customers.budget" },
+        { "name": "lead_source_id", "label": "Источник лида", "type": "select", "required": false, "source": "GET /api/lead-sources", "link": "/settings/lead-sources", "db": "customers.lead_source_id" },
+        { "name": "gender", "label": "Пол", "type": "radio", "required": false, "options": [
+          { "value": null, "label": "Не указано" },
+          { "value": "male", "label": "Мужской" },
+          { "value": "female", "label": "Женский" }
+        ], "db": "customers.gender" },
+        { "name": "age_bracket", "label": "Возраст", "type": "radio", "required": false, "options": [
+          { "value": null, "label": "Не указано" },
+          { "value": "18_24", "label": "18–24" },
+          { "value": "25_30", "label": "25–30" },
+          { "value": "31_40", "label": "31–40" },
+          { "value": "41_50", "label": "41–50" },
+          { "value": "51_plus", "label": "51+" }
+        ], "db": "customers.age_bracket" }
+      ],
+      "buttons": [
+        { "label": "Сохранить", "disabled_if": "phoneExists (дубликат телефона)" },
+        { "label": "Отмена", "action": "navigate /customers" }
+      ],
+      "result": ["POST /api/customers → create_customer_and_project"]
+    },
+    {
+      "id": "s4",
+      "screen": "Бэкенд",
+      "route": "POST /api/customers",
+      "action": "create_customer_and_project (одна транзакция)",
+      "system": true,
+      "parallel_note": "Атомарно в одной транзакции; на диаграмме — параллельные ветки",
+      "parallel": [
+        {
+          "id": "s4a",
+          "screen": "Сохранение клиента",
+          "side_effect": "INSERT customers",
+          "result": [
+            "Номер A00001…",
+            "created_by_user_id = текущий пользователь",
+            "EVENT_CUSTOMER_CREATED"
+          ]
+        },
+        {
+          "id": "s4b",
+          "screen": "Создание проекта",
+          "side_effect": "INSERT projects",
+          "result": [
+            "name «Новый проект», project_number A00001-P01",
+            "status_id → «Первое касание» (первый по sort_order)",
+            "created_by_user_id = текущий пользователь",
+            "EVENT_PROJECT_CREATED"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Возврат после успешного сохранения",
+      "ui_notes": [
+        "После сохранения выберите клиента слева — справа в «Проекты» виден проект «Новый проект» со статусом «Первое касание»",
+        "Статусы проектов настраиваются в /settings/project-statuses; для автопроекта берётся запись с минимальным sort_order"
+      ]
+    }
+  ],
+  "api": [
+    "GET /api/lead-sources",
+    "GET /api/customers/check-phone",
+    "POST /api/customers",
+    "GET /api/project-statuses (seed: первый по sort_order — «Первое касание»)"
+  ],
+  "entities": ["customers", "projects", "lead_sources", "project_statuses"]
+}

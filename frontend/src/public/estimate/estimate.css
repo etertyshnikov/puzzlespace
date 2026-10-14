@@ -1,0 +1,205 @@
+.est { display: flex; flex-direction: column; gap: 16px; }
+.est-progress { display: flex; gap: 8px; }
+.est-progress span {
+  height: 6px;
+  flex: 1;
+  border-radius: 99px;
+  background: #d5e6ef;
+}
+.est-progress span.on { background: #f0a01a; }
+.est h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); color: #0b4c68; }
+.est-lead { margin: 0; color: #3e5562; line-height: 1.45; }
+.est-grid { display: grid; gap: 12px; }
+@media (min-width: 800px) {
+  .est-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .est-grid.tech { grid-template-columns: repeat(3, 1fr); }
+}
+.est-3d {
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 22px;
+  padding: 18px 16px 16px;
+  color: #163043;
+  background: #fff;
+  box-shadow: 0 7px 0 #d7e3ea, 0 12px 24px rgba(11, 76, 104, .08);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.est-3d:hover { transform: translateY(-2px); }
+.est-3d:active { transform: translateY(5px); box-shadow: 0 2px 0 #d7e3ea; }
+.est-3d strong { display: block; font-size: 1.05rem; }
+.est-3d small { display: block; margin-top: 4px; color: #4d6574; }
+.est-3d.business { background: linear-gradient(180deg, #fff 0%, #e7f4ff 100%); box-shadow: 0 7px 0 #8ec3e6, 0 12px 24px rgba(11, 76, 104, .08); }
+.est-3d.self { background: linear-gradient(180deg, #fff 0%, #fff4dc 100%); box-shadow: 0 7px 0 #f0a01a, 0 12px 24px rgba(240, 160, 26, .18); }
+.est-3d.bath { background: linear-gradient(180deg, #fff 0%, #e7f7f1 100%); box-shadow: 0 7px 0 #7dbe9b, 0 12px 24px rgba(47, 143, 107, .12); }
+.est-emoji { font-size: 1.8rem; line-height: 1; }
+.est-block { margin-top: 8px; }
+.est-block h3 { margin: 14px 0 8px; color: #0b4c68; font-size: 1.05rem; }
+.est-label { display: block; font-weight: 700; margin: 10px 0 6px; }
+.est-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.est-field input, .est input[type="text"], .est input[type="number"] {
+  width: 100%;
+  border: 1px solid #d5e6ef;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #fff;
+}
+.est-unit { font-size: 1.6rem; font-weight: 800; color: #0b4c68; }
+.est-checks { display: flex; flex-direction: column; gap: 8px; }
+.est-checks label {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.est-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.est-choice {
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #fff;
+  color: #0b4c68;
+  font-weight: 700;
+  box-shadow: 0 4px 0 #d7e3ea;
+}
+.est-choice.on { background: #0b4c68; color: #fff; box-shadow: 0 4px 0 #08364b; }
+.est-choice.gold.on { background: #f0a01a; color: #3a2500; box-shadow: 0 4px 0 #c47d08; }
+.est-choice.green.on { background: #2f8f6b; color: #fff; box-shadow: 0 4px 0 #1d6b4e; }
+.est-tech {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  background: #fff;
+  border-radius: 18px;
+  padding: 8px;
+  box-shadow: 0 5px 0 #d7e3ea;
+  color: inherit;
+  font: inherit;
+}
+.est-tech img { width: 100%; height: 84px; object-fit: cover; border-radius: 12px; }
+.est-tech.on { outline: 3px solid #f0a01a; }
+.est-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.est-go, .est-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 16px;
+  background: #f0a01a;
+  color: #3a2500;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #c47d08;
+}
+.est-go:disabled { opacity: .6; cursor: wait; }
+.est-go.ghost, .est-link.ghost { background: #fff; color: #0b4c68; box-shadow: 0 6px 0 #d7e3ea; }
+.est-go.max { background: #2f8f6b; color: #fff; box-shadow: 0 6px 0 #1d6b4e; flex: 1; }
+.est-error { background: #fff1ea; color: #9d3418; border-radius: 14px; padding: 10px 12px; }
+.est-hint { color: #4d6574; font-size: .9rem; margin: 6px 0 0; }
+.est-cards { display: grid; gap: 8px; }
+@media (min-width: 700px) { .est-cards { grid-template-columns: 1fr 1fr; } }
+.est-card { background: #fff; border-radius: 16px; padding: 10px 12px; }
+.est-card span { display: block; color: #4d6574; font-size: .8rem; }
+.est-card strong { color: #0b4c68; }
+.est-line {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  margin: 0 0 8px;
+}
+.est-line b { color: #0b4c68; }
+.est-line em { font-style: normal; float: right; font-weight: 800; }
+.est-meter { height: 8px; background: #e7f2f8; border-radius: 99px; margin-top: 8px; overflow: hidden; }
+.est-meter i { display: block; height: 100%; background: #f0a01a; }
+.est-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  background: #0b4c68;
+  color: #fff;
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin: 8px 0 14px;
+}
+.est-total strong { font-size: 1.35rem; }
+.est-section-title { margin-top: 8px; }
+.est-scale {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 14px 10px;
+}
+.est-scale-value { display: block; color: #0b4c68; font-size: 1.7rem; margin-bottom: 4px; }
+.est-scale input[type="range"] {
+  width: 100%;
+  margin: 6px 0;
+  accent-color: #f0a01a;
+  height: 28px;
+  cursor: pointer;
+}
+.est-scale-marks {
+  display: flex;
+  justify-content: space-between;
+  color: #4d6574;
+  font-size: .85rem;
+}
+.est-techbars { display: flex; flex-direction: column; gap: 8px; }
+.est-techrow {
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px 12px 12px;
+}
+.est-techrow.on { outline: 3px solid #f0a01a; }
+.est-techrow-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  color: #0b4c68;
+  font-weight: 700;
+}
+.est-techrow-top strong { white-space: nowrap; }
+.est-meter.tall { height: 14px; }
+.est-after {
+  width: min(760px, calc(100% - 28px));
+  margin: 4px auto 28px;
+}
+.est-max-wide {
+  width: 100%;
+  min-height: 58px;
+  margin-top: 4px;
+  background: #2f8f6b;
+  color: #fff;
+  box-shadow: 0 6px 0 #1d6b4e;
+  font-size: 1.05rem;
+}
+.est-photo { width: 100%; max-height: 240px; object-fit: cover; border-radius: 16px; }
+.est-file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.est-chart { width: 100%; height: 280px; }

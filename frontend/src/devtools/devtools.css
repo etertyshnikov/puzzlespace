@@ -1,0 +1,126 @@
+/* Стили оболочки devtools из smetadomacrm_v2 (AppShell) */
+.devtools-root {
+  --brand: #b45309;
+  --brand-dark: #9a3412;
+  --brand-soft: #fff7ed;
+  --brand-border: #fed7aa;
+  --bg: #fafaf9;
+  --surface: #fff;
+  --text: #1c1917;
+  --text-muted: #57534e;
+  --border: #e7e5e4;
+  --border-strong: #d6d3d1;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.devtools-root .app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.devtools-root .app-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: var(--puck-color-white, #fff);
+  border-bottom: 1px solid var(--puck-color-grey-09, #dcdcdc);
+  flex-shrink: 0;
+}
+
+.devtools-root .app-nav-spacer {
+  flex: 1;
+  min-width: 0.5rem;
+}
+
+.devtools-root .app-nav-user {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-left: 1px solid var(--puck-color-grey-09, #dcdcdc);
+  white-space: nowrap;
+}
+
+.devtools-root .app-nav-btn {
+  padding: 8px 16px;
+  border: none;
+  border-right: 1px solid var(--puck-color-grey-09, #dcdcdc);
+  background: transparent;
+  color: var(--puck-color-grey-05, #767676);
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.devtools-root .app-nav-btn:hover {
+  background: #f5f5f4;
+}
+
+.devtools-root .app-nav-btn.is-active {
+  background: var(--puck-color-grey-11, #f5f5f5);
+  color: var(--puck-color-grey-02, #292929);
+  font-weight: 600;
+}
+
+.devtools-root .app-nav-logout {
+  color: var(--brand-dark) !important;
+}
+
+.devtools-root .app-main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.devtools-root .app-main-rules,
+.devtools-root .app-main-flows {
+  height: 100%;
+  overflow: hidden;
+}
+
+.devtools-root .app-screen-loading {
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.devtools-root .app-error-panel {
+  padding: 1.5rem;
+  max-width: 720px;
+}
+
+.devtools-root .app-error-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+}
+
+.devtools-root .app-error-panel pre {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.devtools-root .app-error-panel button {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}

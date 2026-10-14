@@ -1,0 +1,135 @@
+.mmd-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.mmd-head .flows-mermaid-title,
+.mmd-head .rm-mermaid-title {
+  margin: 0;
+}
+
+.mmd-zoom-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.mmd-zoom-btn {
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.875rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mmd-zoom-btn:hover:not(:disabled) {
+  background: var(--surface-hover, #f1f5f9);
+  border-color: var(--border-strong, #cbd5e1);
+}
+
+.mmd-zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mmd-zoom-btn.is-active {
+  background: var(--primary-soft, #e0f2fe);
+  border-color: var(--primary, #0284c7);
+  color: var(--primary, #0284c7);
+}
+
+.mmd-zoom-label {
+  min-width: 2.75rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.mmd-viewport {
+  overflow: auto;
+  max-height: 420px;
+}
+
+.mmd-viewport.is-expanded {
+  max-height: none;
+  flex: 1;
+  min-height: 0;
+}
+
+.mmd-svg-host svg {
+  display: block;
+  height: auto;
+  max-width: none;
+}
+
+.mmd-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.mmd-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(96vw, 1400px);
+  max-height: 92vh;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.2);
+}
+
+.mmd-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mmd-modal-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.mmd-modal-close {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--surface);
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mmd-modal-close:hover {
+  background: var(--surface-hover, #f1f5f9);
+}
+
+.mmd-modal-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0.75rem 1rem 1rem;
+}

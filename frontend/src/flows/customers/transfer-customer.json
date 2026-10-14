@@ -1,0 +1,103 @@
+{
+  "id": "transfer-customer",
+  "title": "Передача клиента другому менеджеру или агенту",
+  "actor": "Менеджер — создатель клиента (created_by_user_id)",
+  "source": "fastapi/smetadoma05 → целевой сценарий Go v2",
+  "implementation": "planned",
+  "implementation_note": "В smetadoma05 as-is нет кнопки и API передачи. Поле customers.created_by_user_id есть; смена владельца — требование для Go-версии.",
+  "preconditions": [
+    "Пользователь авторизован как менеджер (hierarchy_level = 1) или admin_manager",
+    "customers.created_by_user_id = текущий пользователь (только создатель может передать)",
+    "Клиент в статусе сделки «В работе» или «Успех» (не передан уже удалённому пользователю)",
+    "Получатель — активный пользователь с ролью manager или agent"
+  ],
+  "business_rules": [
+    "Видимость клиента после передачи определяется новым created_by_user_id (фильтр списка /customers)",
+    "Проекты клиента остаются привязаны к customer_id; видимость проектов для команды пересчитывается через customer.created_by",
+    "Агент не может передать клиента (только менеджер-создатель)",
+    "Директор / admin_manager может передать любого клиента любому менеджеру или агенту (расширение для админов)"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Выбрать клиента, которого создал текущий менеджер",
+      "ui_notes": [
+        "В таблице видны только клиенты с created_by_user_id из видимой команды",
+        "Для передачи клиент должен быть «вашим» (вы создатель)"
+      ]
+    },
+    {
+      "id": "s2",
+      "screen": "Карточка / форма клиента",
+      "route": "/customers/:id/edit",
+      "action": "Кнопка «Передать клиента» (рядом с «Сохранить» или в блоке «Ответственный»)",
+      "ui_notes": [
+        "Кнопка видна только если current_user.id === customer.created_by_user_id",
+        "Показан текущий ответственный: created_by_name"
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Модальное окно передачи",
+      "route": "/customers/:id/edit",
+      "action": "Выбрать получателя → подтвердить передачу",
+      "fields": [
+        {
+          "name": "target_user_id",
+          "label": "Новый ответственный",
+          "type": "select",
+          "required": true,
+          "source": "GET /api/team/members — менеджеры и агенты команды (без текущего пользователя)",
+          "validation": "target_user_id ≠ current_user.id; роль manager или agent",
+          "db": "customers.created_by_user_id"
+        },
+        {
+          "name": "comment",
+          "label": "Комментарий к передаче",
+          "type": "textarea",
+          "required": false,
+          "note": "Опционально; для журнала customer_transfers (Go v2)"
+        }
+      ],
+      "buttons": [
+        { "label": "Передать", "action": "POST /api/customers/{id}/transfer" },
+        { "label": "Отмена", "action": "закрыть модалку" }
+      ]
+    },
+    {
+      "id": "s4",
+      "screen": "Список клиентов",
+      "route": "/customers",
+      "action": "Возврат после успешной передачи",
+      "result": [
+        "UPDATE customers SET created_by_user_id = target_user_id, modified_on = now()",
+        "Клиент исчезает из списка передавшего менеджера",
+        "Клиент появляется у получателя в /customers",
+        "Все projects.customer_id без изменений; видимость проектов у нового владельца через customer.created_by",
+        "Опционально: INSERT customer_transfers (from_user_id, to_user_id, customer_id, comment, created_at)"
+      ]
+    }
+  ],
+  "api": [
+    "GET /api/customers/{id}",
+    "GET /api/team/members",
+    "POST /api/customers/{id}/transfer"
+  ],
+  "api_planned": {
+    "method": "POST",
+    "path": "/api/customers/{id}/transfer",
+    "body": {
+      "target_user_id": "integer, required",
+      "comment": "string, optional"
+    },
+    "errors": [
+      "403 — не создатель клиента (и не директор)",
+      "404 — клиент или получатель не найден",
+      "400 — нельзя передать самому себе; получатель не manager/agent"
+    ]
+  },
+  "entities": ["customers", "projects", "auth_user", "user_hierarchy"],
+  "related_visibility": "get_visible_user_ids / get_visible_project_ids — после смены created_by клиент виден новой команде"
+}

@@ -1,0 +1,94 @@
+{
+  "id": "add-company-user",
+  "title": "Добавление пользователя компании (собственником)",
+  "actor": "Собственник компании (company_owner)",
+  "source": "целевой сценарий Go v2",
+  "implementation": "planned",
+  "implementation_note": "As-is smetadoma05: глобально уникальный auth_user.nic и иерархия без company scope. Сценарий описывает company-scoped пользователей после создания компании (create-company).",
+  "preconditions": [
+    "Компания создана (сценарий create-company)",
+    "Текущий пользователь — собственник: role=company_owner, company_id = целевая компания",
+    "JWT содержит company_id; все операции ограничены этой компанией"
+  ],
+  "business_rules": [
+    "Собственник добавляет менеджеров и агентов только внутри своей компании",
+    "Логин nic не уникален глобально: admin@company-A и admin@company-B — разные записи auth_user при разных company_id",
+    "Проверка дубликата: SELECT … WHERE company_id = ? AND nic = ? (не по всей таблице)",
+    "Новый пользователь не видит клиентов, номенклатуру и расчёты других компаний",
+    "Суперадмин платформы не создаётся через этот UI — только через суперкомпанию"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "screen": "ЛК компании",
+      "route": "/c/{slug}",
+      "action": "Собственник входит по ссылке ЛК или обычному логину с указанием компании",
+      "ui_notes": [
+        "Контекст сессии: company_id из JWT",
+        "Меню ЛК: «Пользователи» / «Команда»"
+      ]
+    },
+    {
+      "id": "s2",
+      "screen": "Список пользователей компании",
+      "route": "/c/{slug}/users",
+      "action": "Кнопка «Добавить пользователя»",
+      "ui_notes": [
+        "Таблица: nic, ФИО, роль, hierarchy_level, активность",
+        "Только пользователи с company_id = текущая компания"
+      ]
+    },
+    {
+      "id": "s3",
+      "screen": "Форма нового пользователя",
+      "route": "/c/{slug}/users/new",
+      "action": "Заполнить поля → «Сохранить» или «Отправить приглашение»",
+      "fields": [
+        { "name": "nic", "label": "Логин", "type": "text", "required": true, "validation": "GET /api/companies/{company_id}/users/check-nic?nic=… — уникальность внутри company_id", "db": "auth_user.nic", "note": "Может совпадать с nic в других компаниях (например admin)" },
+        { "name": "email", "label": "Email", "type": "email", "required": false, "db": "auth_user.email" },
+        { "name": "first_name", "label": "Имя", "type": "text", "required": true, "db": "auth_user.first_name" },
+        { "name": "last_name", "label": "Фамилия", "type": "text", "required": false, "db": "auth_user.last_name" },
+        { "name": "role", "label": "Роль", "type": "select", "required": true, "options": [
+          { "value": "manager", "label": "Менеджер (hierarchy_level=1)" },
+          { "value": "agent", "label": "Агент (hierarchy_level=2)" }
+        ], "db": "auth_user.role_id, auth_user.hierarchy_level" },
+        { "name": "parent_user_id", "label": "Руководитель", "type": "select", "required": true, "source": "GET /api/companies/{company_id}/users?roles=owner,manager", "db": "auth_user.parent_user_id" }
+      ],
+      "buttons": [
+        { "label": "Сохранить", "action": "POST /api/companies/{company_id}/users" },
+        { "label": "Отмена", "action": "navigate /c/{slug}/users" }
+      ]
+    },
+    {
+      "id": "s4",
+      "screen": "Бэкенд",
+      "route": "POST /api/companies/{company_id}/users",
+      "action": "create_company_user",
+      "system": true,
+      "result": [
+        "INSERT auth_user: company_id = {company_id}, nic, role, hierarchy",
+        "UNIQUE (company_id, nic) — конфликт только внутри компании",
+        "INSERT user_hierarchy — closure для команды внутри company",
+        "Опционально: user_invites + email со ссылкой регистрации",
+        "Новый пользователь при логине: company_id в JWT → доступ только к данным своей компании"
+      ]
+    },
+    {
+      "id": "s5",
+      "screen": "Список пользователей",
+      "route": "/c/{slug}/users",
+      "action": "Возврат после успешного добавления",
+      "ui_notes": [
+        "Новый пользователь в таблице команды",
+        "Тот же nic «admin» может быть создан у другой компании независимо"
+      ]
+    }
+  ],
+  "api_planned": [
+    "GET /api/companies/{company_id}/users",
+    "GET /api/companies/{company_id}/users/check-nic?nic=",
+    "POST /api/companies/{company_id}/users"
+  ],
+  "entities": ["auth_user", "user_hierarchy", "user_invites", "companies"],
+  "related_flows": ["create-company"]
+}

@@ -1,0 +1,456 @@
+/**
+ * Gentelella theme for the whole app.
+ * Wrap root in .gentelella-app (see Layout).
+ */
+.gentelella-app {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  line-height: 1.42857;
+}
+
+.gentelella-app body,
+.gentelella-app {
+  background: #F7F7F7;
+}
+
+/* Top nav (header) — светлая тема */
+.gentelella-app .gentelella-top-nav {
+  background: #fff;
+  color: #333;
+  border: none;
+  border-bottom: 1px solid #E6E9ED;
+  border-radius: 0;
+  min-height: 50px;
+  margin-bottom: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  flex-shrink: 0;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.gentelella-app .gentelella-top-nav.gentelella-top-nav--hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Ручное сворачивание меню (бургер на странице спецификаций) */
+.gentelella-app.gentelella-app--chrome-collapsed .gentelella-top-nav {
+  display: none !important;
+}
+
+.gentelella-app.gentelella-app--chrome-collapsed .gentelella-right-col {
+  min-height: 100vh;
+  padding-top: 52px;
+}
+
+.gentelella-chrome-burger-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  min-width: 40px;
+  min-height: 36px;
+}
+
+.gentelella-chrome-burger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 18px;
+}
+
+.gentelella-chrome-burger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: #2A3F54;
+  border-radius: 1px;
+}
+
+.gentelella-chrome-burger-fixed {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 250;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  background: #fff !important;
+}
+
+.gentelella-app .gentelella-top-nav a {
+  color: #555 !important;
+}
+
+.gentelella-app .gentelella-top-nav a:hover {
+  color: #1ABB9C !important;
+  background: #f8f9fa;
+}
+
+.gentelella-app .gentelella-top-nav a.active {
+  background: #1ABB9C;
+  color: #fff !important;
+}
+
+/* Main content area */
+.gentelella-app .gentelella-right-col {
+  padding: 10px 20px 0;
+  background: #f8f9fa;
+  min-height: calc(100vh - 50px);
+}
+
+/* Page title */
+.gentelella-app .page-title {
+  margin-bottom: 20px;
+}
+
+.gentelella-app .page-title h2,
+.gentelella-app .page-title h3 {
+  margin: 9px 0;
+  font-size: 21px;
+  font-weight: 400;
+  color: #000;
+}
+
+/* Row / grid */
+.gentelella-app .row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.gentelella-app .row::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.gentelella-app .col-md-1, .gentelella-app .col-md-2, .gentelella-app .col-md-3,
+.gentelella-app .col-md-4, .gentelella-app .col-md-5, .gentelella-app .col-md-6,
+.gentelella-app .col-md-7, .gentelella-app .col-md-8, .gentelella-app .col-md-9,
+.gentelella-app .col-md-10, .gentelella-app .col-md-11, .gentelella-app .col-md-12 {
+  position: relative;
+  min-height: 1px;
+  float: left;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.gentelella-app .col-md-12 { width: 100%; }
+.gentelella-app .col-md-9 { width: 75%; }
+.gentelella-app .col-md-6 { width: 50%; }
+.gentelella-app .col-md-4 { width: 33.33333333%; }
+.gentelella-app .col-md-3 { width: 25%; }
+.gentelella-app .col-md-8 { width: 66.66666667%; }
+
+@media (max-width: 991px) {
+  .gentelella-app .col-md-4,
+  .gentelella-app .col-md-6,
+  .gentelella-app .col-md-8 {
+    width: 100%;
+  }
+}
+
+/* x_panel */
+.gentelella-app .x_panel {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 17px;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #E6E9ED;
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+/* Карточки (как .card.shadow-sm): дашборд, клиенты, проекты — без серой рамки */
+.gentelella-app .x_panel.dashboard-card-panel,
+.gentelella-app .x_panel.card-panel {
+  border: none;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.gentelella-app .x_title {
+  border-bottom: none;
+  padding: 1px 5px 6px;
+  margin-bottom: 10px;
+}
+
+.gentelella-app .x_title h2 {
+  margin: 5px 0 6px;
+  float: left;
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  color: #000;
+}
+
+.gentelella-app .x_content {
+  padding: 0 3px 6px;
+  position: relative;
+  width: 100%;
+  float: left;
+  clear: both;
+  margin-top: 5px;
+}
+
+/* Серая линия сразу под заголовком «Настройки» в боковой панели настроек */
+.gentelella-app .settings-nav-panel .settings-nav-title {
+  overflow: auto;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: none;
+}
+.gentelella-app .settings-nav-panel .settings-nav-title h2 {
+  margin: 0 0 4px 0;
+}
+
+.gentelella-app .clearfix::after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* Tables (.table-bordered: рамки со всех сторон) */
+.gentelella-app .table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  border: 1px solid #E6E9ED;
+}
+
+.gentelella-app .table th,
+.gentelella-app .table td {
+  padding: 8px 12px;
+  vertical-align: top;
+  border: 1px solid #E6E9ED;
+  text-align: left;
+  color: #000;
+}
+
+.gentelella-app .table thead th {
+  vertical-align: bottom;
+  border: 1px solid #E6E9ED;
+  font-weight: 600;
+  color: #000;
+  background: #F9F9F9;
+}
+
+.gentelella-app .table tbody tr:hover {
+  background-color: #F9F9F9;
+}
+
+.gentelella-app .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #F9F9F9;
+}
+
+/* Buttons */
+.gentelella-app .btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  font-size: 14px;
+  line-height: 1.42857;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.gentelella-app .btn:focus {
+  outline: 0;
+}
+
+.gentelella-app .btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.gentelella-app .btn-primary {
+  background: #337AB7;
+  border-color: #2E6DA4;
+  color: #fff;
+}
+
+.gentelella-app .btn-primary:hover {
+  background: #286090;
+  border-color: #204D74;
+  color: #fff;
+}
+
+.gentelella-app .btn-primary.active {
+  background: #204D74;
+  border-color: #1B3E5E;
+  color: #fff;
+}
+
+.gentelella-app .btn-success {
+  background: #26B99A;
+  border-color: #169F85;
+  color: #fff;
+}
+
+.gentelella-app .btn-success:hover {
+  background: #169F85;
+  color: #fff;
+}
+
+.gentelella-app .btn-default {
+  background: #fff;
+  border: 1px solid #E6E9ED;
+  color: #000;
+}
+
+.gentelella-app .btn-default:hover {
+  background: #F2F5F7;
+  color: #000;
+}
+
+.gentelella-app .btn-danger {
+  background: #E74C3C;
+  border-color: #E74C3C;
+  color: #fff;
+}
+
+.gentelella-app .btn-danger:hover {
+  background: #C0392B;
+  color: #fff;
+}
+
+/* Form controls */
+.gentelella-app .form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #000;
+  background: #fff;
+  border: 1px solid #E6E9ED;
+  border-radius: 0;
+}
+
+.gentelella-app .form-control:focus {
+  border-color: #CCD0D7;
+  outline: 0;
+  box-shadow: none;
+}
+
+.gentelella-app .form-group {
+  margin-bottom: 15px;
+}
+
+.gentelella-app .control-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #000;
+}
+
+.gentelella-app textarea.form-control {
+  height: auto;
+  min-height: 80px;
+}
+
+/* Links */
+.gentelella-app a {
+  color: #000;
+  text-decoration: none;
+}
+
+.gentelella-app a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+/* Headings */
+.gentelella-app h1, .gentelella-app .h1,
+.gentelella-app h2, .gentelella-app .h2,
+.gentelella-app h3, .gentelella-app .h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+/* Badges (for statuses) */
+.gentelella-app .badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 10px;
+}
+
+.gentelella-app .badge-success {
+  background: #26B99A;
+  color: #fff;
+}
+
+.gentelella-app .badge-default {
+  background: #E6E9ED;
+  color: #000;
+}
+
+/* Карточка элемента списка (скругление, тень; без серой рамки, только цветная полоска слева) */
+.gentelella-app .list-item.nav-card,
+.gentelella-app .list-item.dashboard-status-card {
+  border: none;
+  border-left: 4px solid #5A738E;
+  border-radius: 0.375rem;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+}
+
+.gentelella-app .list-item.nav-card:hover,
+.gentelella-app .list-item.dashboard-status-card:hover {
+  background: #F2F5F7;
+}
+
+.gentelella-app .list-item.nav-card.active,
+.gentelella-app .list-item.dashboard-status-card.active {
+  border-left-color: #1ABB9C;
+  background: #E8F6F3;
+  color: #000;
+}
+
+/* Settings sidebar — ссылка внутри карточки */
+.gentelella-app .settings-nav-link {
+  padding: 0;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+}
+
+.gentelella-app .settings-nav-link:hover {
+  background: transparent;
+  color: inherit;
+}
+
+.gentelella-app .settings-nav-link.active {
+  background: transparent;
+  color: inherit;
+}

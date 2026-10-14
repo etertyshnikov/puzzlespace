@@ -1,0 +1,22 @@
+---
+description: Миграции БД smetadoma05 — только Alembic
+globs: fastapi/smetadoma05/**/*
+alwaysApply: true
+---
+
+# Миграции smetadoma05 (FastAPI)
+
+## Запрещено
+- НЕ добавлять колонки в `app/migrations/ddl_postgresql.py` (legacy)
+- НЕ создавать `app/migrate_*.py` для новой схемы
+- НЕ вызывать `create_all` / `apply_full_schema` при старте API
+
+## При изменении схемы
+1. Обновить модель в `app/models/crm.py`
+2. `bash scripts/migrate-revision.sh "описание"`
+3. Проверить файл в `alembic/versions/`
+4. `bash scripts/migrate-apply.sh`
+
+## Источник правды
+- Модели: `app/models/`
+- История: `alembic/versions/`

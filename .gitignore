@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/schemaspy/
+frontend/static/
+*.tsbuildinfo
+frontend/*.tsbuildinfo
+*.egg-info/
+.DS_Store
+.commitmsg*
+snapshots/
+!snapshots/.gitkeep

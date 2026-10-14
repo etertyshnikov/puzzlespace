@@ -1,0 +1,26 @@
+[Unit]
+Description=smetadoma05 FastAPI (uvicorn)
+Documentation=file:///opt/fastapi/smetadoma05/run.py
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Рабочий каталог проекта
+WorkingDirectory=/opt/fastapi/smetadoma05
+# Скопируйте .env.example в .env и заполните DB_URI, JWT_SECRET_KEY и т.д.
+EnvironmentFile=-/opt/fastapi/smetadoma05/.env
+# Сборка фронта — вручную при деплое: cd frontend && npm run build
+# ExecStartPre=/bin/bash /opt/fastapi/smetadoma05/deploy/build-frontend.sh
+ExecStartPre=/bin/bash /opt/fastapi/smetadoma05/scripts/migrate-apply.sh
+# Без --reload (только для разработки)
+# .venv или venv — что есть на сервере
+ExecStart=/bin/bash -lc 'cd /opt/fastapi/smetadoma05 && if [ -x .venv/bin/python ]; then PY=.venv/bin/python; elif [ -x venv/bin/python ]; then PY=venv/bin/python; else echo "no venv"; exit 1; fi; exec "$PY" -m uvicorn app.main:app --host 0.0.0.0 --port 8008'
+Restart=on-failure
+RestartSec=5
+# Логи: journalctl -u smetadoma05 -f
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
